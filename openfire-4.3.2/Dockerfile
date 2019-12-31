@@ -1,13 +1,15 @@
 FROM openjdk:8-jre-stretch
 
-WORKDIR /home/openfire
+COPY ./openfire_4_3_2.tar.gz /home
 
-COPY ./openfire_4_3_2.tar.gz /home/openfire
+COPY ./startup.sh /home
 
-RUN ["tar", "-xvzf", "openfire_4_3_2.tar.gz"]
+WORKDIR /home
 
-RUN ["chmod", "+x", "./openfire/bin/openfire.sh"]
+RUN ["tar", "-xzf", "openfire_4_3_2.tar.gz"]
 
-ENTRYPOINT [ "./openfire/bin/openfire.sh", "start" ]
+RUN ["chmod", "+x", "openfire/bin/openfire.sh"]
+
+ENTRYPOINT [ "/home/startup.sh" ]
 
 EXPOSE 9090 9091 5222 5223
